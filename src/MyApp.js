@@ -12,9 +12,6 @@ function MyApp() {
       });
       setCharacters(updated);
     }
-  function updateList(person) {
-    setCharacters([...characters, person]);
-  }
 
   async function makePostCall(person){
     try {
@@ -25,13 +22,24 @@ function MyApp() {
        console.log(error);
        return false;
     }
- }
+  }
 
   function updateList(person) { 
     makePostCall(person).then( result => {
-      if (result && result.status === 201)
-        setCharacters([...characters, person] );
-      });
+      if (result && result.status === 201){
+        setCharacters([...characters, result.data] );
+     }});
+  }
+
+  async function makeDeleteCall(id){
+    try {
+       const response = await axios.delete('http://localhost:5000/users/', id);
+       return response;
+    }
+    catch (error) {
+       console.log(error);
+       return false;
+    }
   }
 
   async function fetchAll(){
